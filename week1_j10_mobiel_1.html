@@ -1,0 +1,1294 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Week 1 · J10-4 · VV Maarssen</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0e1a0f;
+    --surface: #152017;
+    --surface2: #1c2b1e;
+    --border: #2a3d2c;
+    --accent: #5dde6a;
+    --orange: #f07830;
+    --yellow: #f0c830;
+    --red: #e84040;
+    --blue: #40a0e8;
+    --text: #e8f0e8;
+    --muted: #7a9a7c;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Outfit', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  /* HEADER */
+  header {
+    background: linear-gradient(160deg, #0e1a0f 0%, #152a17 100%);
+    border-bottom: 3px solid var(--accent);
+    padding: 1.5rem 1.1rem 1.25rem;
+  }
+  .breadcrumb {
+    font-size: 0.65rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+  }
+  .breadcrumb span { color: var(--accent); }
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3rem;
+    line-height: 0.9;
+    color: #fff;
+  }
+  h1 em { color: var(--accent); font-style: normal; }
+  .header-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 1rem;
+  }
+  .chip {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 0.25rem 0.6rem;
+    font-size: 0.72rem;
+    color: var(--muted);
+    font-weight: 500;
+  }
+  .chip strong { color: var(--text); }
+  .rode-draad {
+    margin-top: 1rem;
+    background: rgba(93,222,106,0.08);
+    border-left: 3px solid var(--accent);
+    padding: 0.65rem 0.9rem;
+    border-radius: 0 4px 4px 0;
+  }
+  .rode-draad .rd-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 0.15rem;
+  }
+  .rode-draad p { font-size: 0.83rem; color: var(--text); }
+
+  main { padding: 0 0 4rem; }
+
+  /* TRAINING TAB SWITCHER */
+  .tab-bar {
+    display: flex;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--bg);
+    border-bottom: 2px solid var(--border);
+  }
+  .tab-btn {
+    flex: 1;
+    padding: 0.75rem 0.5rem;
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1rem;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .tab-btn.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+
+  /* TRAINING PANEL */
+  .training-panel { display: none; }
+  .training-panel.active { display: block; }
+
+  /* TRAINING HEADER */
+  .training-head {
+    padding: 1rem 1.1rem 0.75rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .training-head h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem;
+    color: #fff;
+    line-height: 1;
+  }
+  .training-head p {
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-top: 0.2rem;
+  }
+
+  /* TIJDLIJN */
+  .tijdlijn {
+    display: flex;
+    overflow-x: auto;
+    padding: 0.6rem 1.1rem;
+    gap: 0.4rem;
+    border-bottom: 1px solid var(--border);
+    scrollbar-width: none;
+  }
+  .tijdlijn::-webkit-scrollbar { display: none; }
+  .tl-item {
+    flex-shrink: 0;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0.3rem 0.6rem;
+    text-align: center;
+    min-width: 56px;
+  }
+  .tl-min {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1rem;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .tl-naam {
+    font-size: 0.55rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 500;
+    margin-top: 0.1rem;
+  }
+
+  /* OEFENING */
+  .oefening {
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* ACCORDION TOGGLE */
+  .oefen-toggle {
+    width: 100%;
+    background: var(--surface);
+    border: none;
+    padding: 0.9rem 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    cursor: pointer;
+    text-align: left;
+  }
+  .oefen-fase {
+    font-size: 0.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    padding: 0.18rem 0.5rem;
+    border-radius: 2px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .fase-instuif    { background: rgba(240,200,48,0.15); color: var(--yellow); }
+  .fase-techniek   { background: rgba(93,222,106,0.15); color: var(--accent); }
+  .fase-duel       { background: rgba(240,120,48,0.15); color: var(--orange); }
+  .fase-afronden   { background: rgba(232,64,64,0.15);  color: var(--red); }
+  .fase-partijspel { background: rgba(64,160,232,0.15); color: var(--blue); }
+  .fase-afsluiting { background: rgba(93,222,106,0.08); color: var(--muted); }
+
+  .oefen-naam {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.15rem;
+    color: #fff;
+    flex: 1;
+    line-height: 1.1;
+  }
+  .oefen-duur {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1rem;
+    color: var(--muted);
+    flex-shrink: 0;
+  }
+  .oefen-chevron {
+    font-size: 0.65rem;
+    color: var(--muted);
+    flex-shrink: 0;
+    transition: transform 0.2s;
+  }
+  .oefen-toggle.open .oefen-chevron { transform: rotate(180deg); }
+
+  /* ACCORDION BODY */
+  .oefen-body {
+    display: none;
+    padding: 0 1.1rem 1.1rem;
+    background: var(--surface);
+  }
+  .oefen-body.open { display: block; }
+
+  /* DIAGRAM */
+  .diagram-wrap {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.6rem;
+    margin-bottom: 1rem;
+  }
+  .diagram-label {
+    font-size: 0.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    margin-bottom: 0.4rem;
+    text-align: center;
+  }
+  .diagram-wrap svg { width: 100%; height: auto; display: block; }
+  .legenda {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--border);
+  }
+  .leg-item {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.62rem;
+    color: var(--muted);
+  }
+  .leg-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .leg-line { width: 14px; height: 2px; flex-shrink: 0; }
+
+  /* SECTIE LABELS */
+  .sectie-label {
+    font-size: 0.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    margin: 0.9rem 0 0.4rem;
+  }
+
+  /* UITVOERING */
+  .uitvoering p {
+    font-size: 0.85rem;
+    color: var(--text);
+    line-height: 1.65;
+  }
+
+  /* COACHING PUNTEN */
+  .coaching-lijst {
+    list-style: none;
+    padding: 0;
+  }
+  .coaching-lijst li {
+    font-size: 0.83rem;
+    color: var(--text);
+    padding: 0.3rem 0 0.3rem 1rem;
+    position: relative;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    line-height: 1.5;
+  }
+  .coaching-lijst li:last-child { border-bottom: none; }
+  .coaching-lijst li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-size: 0.65rem;
+    top: 0.38rem;
+  }
+
+  /* DIFFERENTIATIE */
+  .diff-blok {
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .diff-header {
+    background: rgba(93,222,106,0.07);
+    padding: 0.35rem 0.75rem;
+    font-size: 0.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    border-bottom: 1px solid var(--border);
+  }
+  .diff-rij {
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .diff-rij:last-child { border-bottom: none; }
+  .diff-tag {
+    display: inline-block;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 0.12rem 0.45rem;
+    border-radius: 2px;
+    margin-bottom: 0.3rem;
+  }
+  .diff-tag.omhoog { background: rgba(93,222,106,0.15); color: var(--accent); }
+  .diff-tag.omlaag { background: rgba(64,160,232,0.15); color: var(--blue); }
+  .diff-rij p { font-size: 0.82rem; color: var(--muted); line-height: 1.5; }
+
+  /* PROGRESSIE */
+  .progressie-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+  }
+  .prog-item {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0.6rem 0.7rem;
+  }
+  .prog-label {
+    font-size: 0.58rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 0.25rem;
+  }
+  .prog-item.harder .prog-label { color: var(--orange); }
+  .prog-item.makkelijker .prog-label { color: var(--blue); }
+  .prog-item p { font-size: 0.78rem; color: var(--muted); line-height: 1.4; }
+
+  /* TIP BOX */
+  .tip-box {
+    background: rgba(93,222,106,0.05);
+    border: 1px solid rgba(93,222,106,0.15);
+    border-radius: 4px;
+    padding: 0.65rem 0.75rem;
+    display: flex;
+    gap: 0.6rem;
+    align-items: flex-start;
+  }
+  .tip-box p { font-size: 0.8rem; color: var(--muted); line-height: 1.55; }
+  .tip-box p strong { color: var(--text); }
+  .tip-icon { font-size: 1rem; flex-shrink: 0; }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 1.25rem 1.1rem;
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="breadcrumb">VV Maarssen · J10-4 · <span>Fase 1: Fundament</span></div>
+  <h1>Week <em>1</em> · Aannemen</h1>
+  <div class="header-chips">
+    <div class="chip">📅 <strong>Augustus 2025</strong></div>
+    <div class="chip">⏱ <strong>60 min</strong></div>
+    <div class="chip">👥 <strong>8 spelers</strong></div>
+  </div>
+  <div class="rode-draad">
+    <div class="rd-label">Rode draad</div>
+    <p>De eerste aanraking bepaalt alles. Rustig, zacht, bewust — dan pas doorspelen.</p>
+  </div>
+</header>
+
+<main>
+
+<!-- TAB BAR -->
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="switchTab('t1', this)">⚽ Woensdag</button>
+  <button class="tab-btn" onclick="switchTab('t2', this)">⚽ Vrijdag</button>
+</div>
+
+<!-- ══════════════════════════════
+     TRAINING 1 — WOENSDAG
+══════════════════════════════ -->
+<div id="t1" class="training-panel active">
+
+  <div class="training-head">
+    <h2>Techniek &amp; Individu</h2>
+    <p>Woensdag · Balcontact en eerste aanraking</p>
+  </div>
+
+  <div class="tijdlijn">
+    <div class="tl-item"><div class="tl-min">5'</div><div class="tl-naam">Instuif</div></div>
+    <div class="tl-item"><div class="tl-min">15'</div><div class="tl-naam">Techniek</div></div>
+    <div class="tl-item"><div class="tl-min">10'</div><div class="tl-naam">1v1</div></div>
+    <div class="tl-item"><div class="tl-min">10'</div><div class="tl-naam">Afronden</div></div>
+    <div class="tl-item"><div class="tl-min">15'</div><div class="tl-naam">Partijspel</div></div>
+    <div class="tl-item"><div class="tl-min">5'</div><div class="tl-naam">Afsluiting</div></div>
+  </div>
+
+  <!-- INSTUIF -->
+  <div class="oefening">
+    <button class="oefen-toggle" onclick="toggleOefening(this)">
+      <span class="oefen-fase fase-instuif">Instuif</span>
+      <span class="oefen-naam">Vrij Spelen</span>
+      <span class="oefen-duur">5'</span>
+      <span class="oefen-chevron">▼</span>
+    </button>
+    <div class="oefen-body">
+      <div class="sectie-label">Opbouw</div>
+      <div class="uitvoering">
+        <p>Spelers komen op en pakken elk een bal. Geen instructie — gewoon spelen. Dribbelen, schieten, trucjes. Coach staat klaar maar grijpt niet in.</p>
+      </div>
+      <div class="sectie-label">Coachingspunten</div>
+      <ul class="coaching-lijst">
+        <li>Wie is direct actief, wie wacht af? Noteer mentaal.</li>
+        <li>Hoe nemen spelers de bal aan in vrij spel? Dit is je nulmeting.</li>
+        <li>Geen correcties — wel korte positieve opmerkingen.</li>
+      </ul>
+      <div class="sectie-label" style="margin-top:0.9rem"></div>
+      <div class="tip-box">
+        <span class="tip-icon">👁</span>
+        <p><strong>Observatiemoment:</strong> Dit is je nulmeting. Noteer wat je ziet voor na de training.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- AANNAME CIRCUIT -->
+  <div class="oefening">
+    <button class="oefen-toggle" onclick="toggleOefening(this)">
+      <span class="oefen-fase fase-techniek">Techniek</span>
+      <span class="oefen-naam">Het Aanname-Circuit</span>
+      <span class="oefen-duur">15'</span>
+      <span class="oefen-chevron">▼</span>
+    </button>
+    <div class="oefen-body">
+
+      <div class="diagram-wrap">
+        <div class="diagram-label">Aanname-Circuit · 2 groepen van 4</div>
+        <svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg">
+          <rect width="300" height="180" fill="#1a2e1c" rx="4"/>
+          <!-- Groep 1 -->
+          <polygon points="30,30 90,30 90,90 30,90" fill="none" stroke="#2a4a2c" stroke-width="1" stroke-dasharray="3,3"/>
+          <polygon points="30,30 24,20 36,20" fill="#f07830"/>
+          <polygon points="90,30 84,20 96,20" fill="#f07830"/>
+          <polygon points="30,90 24,80 36,80" fill="#f07830"/>
+          <polygon points="90,90 84,80 96,80" fill="#f07830"/>
+          <circle cx="30" cy="30" r="9" fill="#5dde6a" stroke="#fff" stroke-width="1.5"/>
+          <text x="30" y="34" text-anchor="middle" font-size="7" fill="#0e1a0f" font-weight="bold">A</text>
+          <circle cx="90" cy="30" r="9" fill="#5dde6a" stroke="#fff" stroke-width="1.5"/>
+          <text x="90" y="34" text-anchor="middle" font-size="7" fill="#0e1a0f" font-weight="bold">B</text>
+          <circle cx="90" cy="90" r="9" fill="#5dde6a" stroke="#fff" stroke-width="1.5"/>
+          <text x="90" y="94" text-anchor="middle" font-size="7" fill="#0e1a0f" font-weight="bold">C</text>
+          <circle cx="30" cy="90" r="9" fill="#5dde6a" stroke="#fff" stroke-width="1.5"/>
+          <text x="30" y="94" text-anchor="middle" font-size="7" fill="#0e1a0f" font-weight="bold">D</text>
+          <circle cx="60" cy="30" r="4" fill="#f0c830"/>
+          <line x1="39" y1="30" x2="78" y2="30" stroke="#f0c830" stroke-width="1.5" stroke-dasharray="3,2"/>
+          <polygon points="78,30 72,27 72,33" fill="#f0c830"/>
+          <path d="M 30 39 Q 30 60 39 60 Q 78 60 90 39" fill="none" stroke="#5dde6a" stroke-width="1.2" stroke-dasharray="2,2"/>
+          <polygon points="90,39 87,48 93,46" fill="#5dde6a"/>
+          <text x="60" y="120" text-anchor="middle" font-size="8" fill="#7a9a7c">Groep 1</text>
+          <text x="60" y="132" text-anchor="middle" font-size="7" fill="#7a9a7c">8x8 meter</text>
+
+          <!-- Groep 2 -->
+          <polygon points="180,30 240,30 240,90 180,90" fill="none" stroke="#2a4a2c" stroke-width="1" stroke-dasharray="3,3"/>
+          <polygon points="180,30 174,20 186,20" fill="#f07830"/>
+          <polygon points="240,30 234,20 246,20" fill="#f07830"/>
+          <polygon points="180,90 174,80 186,80" fill="#f07830"/>
+          <polygon points="240,90 234,80 246,80" fill="#f07830"/>
+          <circle cx="180" cy="30" r="9" fill="#5dde6a" stroke="#fff" stroke-width="1.5"/>
+          <text x="180" y="34" text-anchor="middle" font-size="7" fill="#0e1a0f" font-weight="bold">A</text>
+          <circle cx="240" cy="30" r="9" fill="#5dde6a" stroke="#fff" stroke-width="1.5"/>
+          <text x="240" y="34" text-anchor="middle" font-size="7" fill="#0e1a0f" font-weight="bold">B</text>
+          <circle cx="240" cy="90" r="9" fill="#5dde6a" stroke="#fff" stroke-width="1.5"/>
+          <text x="240" y="94" text-anchor="middle" font-size="7" fill="#0e1a0f" font-weight="bold">C</text>
+          <circle cx="180" cy="90" r="9" fill="#5dde6a" stroke="#fff" stroke-width="1.5"/>
+          <text x="180" y="94" text-anchor="middle" font-size="7" fill="#0e1a0f" font-weight="bold">D</text>
+          <circle cx="210" cy="30" r="4" fill="#f0c830"/>
+          <line x1="189" y1="30" x2="228" y2="30" stroke="#f0c830" stroke-width="1.5" stroke-dasharray="3,2"/>
+          <polygon points="228,30 222,27 222,33" fill="#f0c830"/>
+          <path d="M 180 39 Q 180 60 189 60 Q 228 60 240 39" fill="none" stroke="#5dde6a" stroke-width="1.2" stroke-dasharray="2,2"/>
+          <polygon points="240,39 237,48 243,46" fill="#5dde6a"/>
+          <text x="210" y="120" text-anchor="middle" font-size="8" fill="#7a9a7c">Groep 2</text>
+          <text x="210" y="132" text-anchor="middle" font-size="7" fill="#7a9a7c">8x8 meter</text>
+
+          <text x="150" y="165" text-anchor="middle" font-size="7" fill="#5dde6a">Pass → loop mee naar pion van ontvanger</text>
+        </svg>
+        <div class="legenda">
+          <div class="leg-item"><div class="leg-dot" style="background:#5dde6a"></div>Speler</div>
+          <div class="leg-item"><div class="leg-dot" style="background:#f0c830"></div>Bal</div>
+          <div class="leg-item"><div class="leg-dot" style="background:#f07830"></div>Pion</div>
+          <div class="leg-item"><div class="leg-line" style="background:#5dde6a"></div>Looproute</div>
+          <div class="leg-item"><div class="leg-line" style="background:#f0c830;opacity:.7"></div>Pas</div>
+        </div>
+      </div>
+
+      <div class="sectie-label">Opbouw</div>
+      <div class="uitvoering">
+        <p>4 pionnen in een vierkant van 8x8m. Speler A speelt op B en loopt door naar de pion van B. B neemt aan en speelt op C — en loopt ook door. Iedereen roteert mee met de bal. Twee groepen van 4 tegelijk, 2 ballen per groep actief.</p>
+      </div>
+
+      <div class="sectie-label">Coachingspunten</div>
+      <ul class="coaching-lijst">
+        <li>Aannemen: binnenvoet, bal naast het standbeen</li>
+        <li>Kijk op vóór je de bal krijgt — weet al waar je naartoe speelt</li>
+        <li>Loop meteen na de pass — niet wachten</li>
+        <li>Tempo opbouwen: eerst rustig, dan sneller</li>
+      </ul>
+
+      <div class="sectie-label">Differentiatie</div>
+      <div class="diff-blok">
+        <div class="diff-header">Aanpassen per speler</div>
+        <div class="diff-rij">
+          <div class="diff-tag omlaag">⬇ Moeite</div>
+          <p>Start met bal aan de voet. Pas van dichtbij zodat de aanname rustig kan verlopen.</p>
+        </div>
+        <div class="diff-rij">
+          <div class="diff-tag omlaag">⬇ Afdwaalt</div>
+          <p>Geef de aanvoerdersrol: hij telt het tempo aan ("klaar, go!"). Houdt de aandacht erbij.</p>
+        </div>
+        <div class="diff-rij">
+          <div class="diff-tag omhoog">⬆ Gaat goed</div>
+          <p>Aannemen in volle beweging, of 1-touch doorspelen als extra uitdaging.</p>
+        </div>
+        <div class="diff-rij">
+          <div class="diff-tag omhoog">⬆ Dribbelaar</div>
+          <p>Mag na aanname één kapbeweging doen vóór hij doorspeelt.</p>
+        </div>
+      </div>
+
+      <div class="sectie-label">Progressie</div>
+      <div class="progressie-grid">
+        <div class="prog-item harder">
+          <div class="prog-label">⬆ Te makkelijk</div>
+          <p>1-touch doorspelen of kleinere vierkant (5x5m).</p>
+        </div>
+        <div class="prog-item makkelijker">
+          <div class="prog-label">⬇ Te moeilijk</div>
+          <p>Grotere vierkant (12m), bal mag even stilliggen.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 1v1 -->
+  <div class="oefening">
+    <button class="oefen-toggle" onclick="toggleOefening(this)">
+      <span class="oefen-fase fase-duel">1v1 Duel</span>
+      <span class="oefen-naam">Aanname &amp; Aftroeven</span>
+      <span class="oefen-duur">10'</span>
+      <span class="oefen-chevron">▼</span>
+    </button>
+    <div class="oefen-body">
+
+      <div class="diagram-wrap">
+        <div class="diagram-label">4 stroken tegelijk · 10x5m</div>
+        <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+          <rect width="300" height="200" fill="#1a2e1c" rx="4"/>
+          <rect x="10" y="15" width="60" height="170" fill="none" stroke="#2a4a2c" stroke-width="1.5" stroke-dasharray="4,3"/>
+          <line x1="10" y1="100" x2="70" y2="100" stroke="#3a5a3c" stroke-width="1"/>
+          <line x1="10" y1="15" x2="70" y2="15" stroke="#5dde6a" stroke-width="2"/>
+          <line x1="10" y1="185" x2="70" y2="185" stroke="#5dde6a" stroke-width="2"/>
+          <rect x="80" y="15" width="60" height="170" fill="none" stroke="#2a4a2c" stroke-width="1.5" stroke-dasharray="4,3"/>
+          <line x1="80" y1="100" x2="140" y2="100" stroke="#3a5a3c" stroke-width="1"/>
+          <line x1="80" y1="15" x2="140" y2="15" stroke="#5dde6a" stroke-width="2"/>
+          <line x1="80" y1="185" x2="140" y2="185" stroke="#5dde6a" stroke-width="2"/>
+          <rect x="155" y="15" width="60" height="170" fill="none" stroke="#2a4a2c" stroke-width="1.5" stroke-dasharray="4,3"/>
+          <line x1="155" y1="100" x2="215" y2="100" stroke="#3a5a3c" stroke-width="1"/>
+          <line x1="155" y1="15" x2="215" y2="15" stroke="#5dde6a" stroke-width="2"/>
+          <line x1="155" y1="185" x2="215" y2="185" stroke="#5dde6a" stroke-width="2"/>
+          <rect x="225" y="15" width="60" height="170" fill="none" stroke="#2a4a2c" stroke-width="1.5" stroke-dasharray="4,3"/>
+          <line x1="225" y1="100" x2="285" y2="100" stroke="#3a5a3c" stroke-width="1"/>
+          <line x1="225" y1="15" x2="285" y2="15" stroke="#5dde6a" stroke-width="2"/>
+          <line x1="225" y1="185" x2="285" y2="185" stroke="#5dde6a" stroke-width="2"/>
+          <!-- Spelers -->
+          <circle cx="40" cy="68" r="9" fill="#5dde6a" stroke="#fff" stroke-width="1.5"/><text x="40" y="72" text-anchor="middle" font-size="8" fill="#0e1a0f" font-weight="bold">A</text>
+          <circle cx="40" cy="132" r="9" fill="#e84040" stroke="#fff" stroke-width="1.5"/><text x="40" y="136" text-anchor="middle" font-size="8" fill="#fff" font-weight="bold">V</text>
+          <circle cx="40" cy="100" r="5" fill="#f0c830"/>
+          <circle cx="110" cy="68" r="9" fill="#5dde6a" stroke="#fff" stroke-width="1.5"/><text x="110" y="72" text-anchor="middle" font-size="8" fill="#0e1a0f" font-weight="bold">A</text>
+          <circle cx="110" cy="132" r="9" fill="#e84040" stroke="#fff" stroke-width="1.5"/><text x="110" y="136" text-anchor="middle" font-size="8" fill="#fff" font-weight="bold">V</text>
+          <circle cx="110" cy="100" r="5" fill="#f0c830"/>
+          <circle cx="185" cy="68" r="9" fill="#5dde6a" stroke="#fff" stroke-width="1.5"/><text x="185" y="72" text-anchor="middle" font-size="8" fill="#0e1a0f" font-weight="bold">A</text>
+          <circle cx="185" cy="132" r="9" fill="#e84040" stroke="#fff" stroke-width="1.5"/><text x="185" y="136" text-anchor="middle" font-size="8" fill="#fff" font-weight="bold">V</text>
+          <circle cx="185" cy="100" r="5" fill="#f0c830"/>
+          <circle cx="255" cy="68" r="9" fill="#5dde6a" stroke="#fff" stroke-width="1.5"/><text x="255" y="72" text-anchor="middle" font-size="8" fill="#0e1a0f" font-weight="bold">A</text>
+          <circle cx="255" cy="132" r="9" fill="#e84040" stroke="#fff" stroke-width="1.5"/><text x="255" y="136" text-anchor="middle" font-size="8" fill="#fff" font-weight="bold">V</text>
+          <circle cx="255" cy="100" r="5" fill="#f0c830"/>
+        </svg>
+        <div class="legenda">
+          <div class="leg-item"><div class="leg-dot" style="background:#5dde6a"></div>Aanvaller (A)</div>
+          <div class="leg-item"><div class="leg-dot" style="background:#e84040"></div>Verdediger (V)</div>
+          <div class="leg-item"><div class="leg-dot" style="background:#f0c830"></div>Bal (ingespeeld)</div>
+        </div>
+      </div>
+
+      <div class="sectie-label">Opbouw</div>
+      <div class="uitvoering">
+        <p>Strook van 10x5m per paar. Coach speelt een bal in het midden. Wie de bal als eerste aanneemt, probeert de eindlijn te passeren. De ander verdedigt. Alle 4 paren tegelijk — wissel elke 60 seconden.</p>
+      </div>
+
+      <div class="sectie-label">Coachingspunten</div>
+      <ul class="coaching-lijst">
+        <li>Aanvaller: aanname direct richting de ruimte, niet stil</li>
+        <li>Aanvaller: gebruik je lichaam om de bal af te schermen</li>
+        <li>Verdediger: wacht af — stuur naar de zijlijn, geen wilde tackle</li>
+      </ul>
+
+      <div class="sectie-label">Differentiatie</div>
+      <div class="diff-blok">
+        <div class="diff-header">Aanpassen per speler</div>
+        <div class="diff-rij">
+          <div class="diff-tag omlaag">⬇ Moeite tech.</div>
+          <p>Start als verdediger — zijn kracht benutten. Aanvallen komt als vertrouwen gegroeid is.</p>
+        </div>
+        <div class="diff-rij">
+          <div class="diff-tag omhoog">⬆ Gaat goed</div>
+          <p>Aanvaller — techniek en kappen uitspelen. Benoem een mooie actie direct.</p>
+        </div>
+        <div class="diff-rij">
+          <div class="diff-tag omlaag">⬇ Emotioneel</div>
+          <p>Na een verloren duel direct doorpakken: "goed geprobeerd, volgende." Geen stilte laten vallen.</p>
+        </div>
+      </div>
+
+      <div class="sectie-label">Progressie</div>
+      <div class="progressie-grid">
+        <div class="prog-item harder">
+          <div class="prog-label">⬆ Te makkelijk</div>
+          <p>Smallere strook (3m) — minder ruimte.</p>
+        </div>
+        <div class="prog-item makkelijker">
+          <div class="prog-label">⬇ Te moeilijk</div>
+          <p>Bredere strook (8m), verdediger start 1 stap achter.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AFRONDEN -->
+  <div class="oefening">
+    <button class="oefen-toggle" onclick="toggleOefening(this)">
+      <span class="oefen-fase fase-afronden">Afronden</span>
+      <span class="oefen-naam">Aanname &amp; Schot</span>
+      <span class="oefen-duur">10'</span>
+      <span class="oefen-chevron">▼</span>
+    </button>
+    <div class="oefen-body">
+
+      <div class="diagram-wrap">
+        <div class="diagram-label">Aanname &amp; Schot op Doel</div>
+        <svg viewBox="0 0 280 200" xmlns="http://www.w3.org/2000/svg">
+          <rect width="280" height="200" fill="#1a2e1c" rx="4"/>
+          <rect x="95" y="12" width="90" height="18" fill="none" stroke="#7a9a7c" stroke-width="2"/>
+          <text x="140" y="25" text-anchor="middle" font-size="7" fill="#7a9a7c">DOEL</text>
+          <circle cx="140" cy="22" r="8" fill="#f07830" stroke="#fff" stroke-width="1.5"/>
+          <text x="140" y="26" text-anchor="middle" font-size="6" fill="#fff" font-weight="bold">K</text>
+          <circle cx="140" cy="95" r="9" fill="#5dde6a" stroke="#fff" stroke-width="1.5"/>
+          <text x="140" y="99" text-anchor="middle" font-size="7" fill="#0e1a0f" font-weight="bold">S</text>
+          <circle cx="140" cy="140" r="9" fill="#7a9a7c" stroke="#fff" stroke-width="1.5"/>
+          <text x="140" y="144" text-anchor="middle" font-size="7" fill="#fff" font-weight="bold">C</text>
+          <circle cx="123" cy="140" r="4" fill="#f0c830"/>
+          <circle cx="116" cy="143" r="4" fill="#f0c830"/>
+          <circle cx="110" cy="138" r="4" fill="#f0c830"/>
+          <line x1="140" y1="131" x2="140" y2="104" stroke="#f0c830" stroke-width="1.5" stroke-dasharray="3,2"/>
+          <polygon points="140,104 136,113 144,113" fill="#f0c830"/>
+          <line x1="140" y1="86" x2="140" y2="42" stroke="#e84040" stroke-width="2"/>
+          <polygon points="140,42 136,52 144,52" fill="#e84040"/>
+          <circle cx="200" cy="95" r="8" fill="#5dde6a" stroke="#fff" stroke-width="1" opacity="0.6"/>
+          <text x="200" y="99" text-anchor="middle" font-size="6" fill="#0e1a0f">2e</text>
+          <circle cx="215" cy="95" r="8" fill="#5dde6a" stroke="#fff" stroke-width="1" opacity="0.4"/>
+          <text x="215" y="99" text-anchor="middle" font-size="6" fill="#0e1a0f">3e</text>
+          <text x="140" y="170" text-anchor="middle" font-size="7" fill="#7a9a7c">Coach (C) speelt in · speler neemt aan · schiet</text>
+          <text x="140" y="183" text-anchor="middle" font-size="7" fill="#7a9a7c">Doorlopend ritme — geen wachtrijen</text>
+        </svg>
+        <div class="legenda">
+          <div class="leg-item"><div class="leg-dot" style="background:#5dde6a"></div>Schutter</div>
+          <div class="leg-item"><div class="leg-dot" style="background:#f07830"></div>Keeper</div>
+          <div class="leg-item"><div class="leg-dot" style="background:#7a9a7c"></div>Coach</div>
+          <div class="leg-item"><div class="leg-line" style="background:#e84040"></div>Schot</div>
+          <div class="leg-item"><div class="leg-line" style="background:#f0c830;opacity:.7"></div>Pass</div>
+        </div>
+      </div>
+
+      <div class="sectie-label">Opbouw</div>
+      <div class="uitvoering">
+        <p>Coach staat 10m voor doel met stapel ballen. Speelt een bal in op speler op ~12m. Speler neemt aan en schiet direct. Terwijl speler A schiet, staat B al klaar. Doorlopend ritme. Varieer hoek: recht, vanuit links, vanuit rechts. Keeper wisselt elke 2 minuten.</p>
+      </div>
+
+      <div class="sectie-label">Coachingspunten</div>
+      <ul class="coaching-lijst">
+        <li>Aanname direct richting doel — niet zijwaarts</li>
+        <li>Oog op de bal bij aanname, dan hoofd omhoog voor schot</li>
+        <li>Schietvoet: wreef of binnenkant — bewuste keuze</li>
+        <li>Keeper: positie centraal, niet aan één kant</li>
+      </ul>
+
+      <div class="sectie-label">Differentiatie</div>
+      <div class="diff-blok">
+        <div class="diff-header">Aanpassen per speler</div>
+        <div class="diff-rij">
+          <div class="diff-tag omlaag">⬇ Moeite</div>
+          <p>Dichterbij (8m) — meer succeskans. Geen technisch commentaar, alleen bevestigen dat hij schoot.</p>
+        </div>
+        <div class="diff-rij">
+          <div class="diff-tag omlaag">⬇ Haastig</div>
+          <p>"Neem aan, stop, kijk naar doel, dan pas schieten." Letterlijk zo benoemen.</p>
+        </div>
+        <div class="diff-rij">
+          <div class="diff-tag omhoog">⬆ Schiet altijd</div>
+          <p>Verplichte aanname vóór schieten — mag niet uit de eerste aanraking schieten.</p>
+        </div>
+        <div class="diff-rij">
+          <div class="diff-tag omlaag">⬇ Emotioneel</div>
+          <p>Na een misser: meteen volgende bal klaarleggen. Geen stilte — momentum houden.</p>
+        </div>
+      </div>
+
+      <div class="sectie-label">Progressie</div>
+      <div class="progressie-grid">
+        <div class="prog-item harder">
+          <div class="prog-label">⬆ Te makkelijk</div>
+          <p>Pass vanuit grotere hoek of in beweging aannemen.</p>
+        </div>
+        <div class="prog-item makkelijker">
+          <div class="prog-label">⬇ Te moeilijk</div>
+          <p>Bal ligt stil — aanname weghalen, terug naar basisschot.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PARTIJSPEL -->
+  <div class="oefening">
+    <button class="oefen-toggle" onclick="toggleOefening(this)">
+      <span class="oefen-fase fase-partijspel">Partijspel</span>
+      <span class="oefen-naam">4v4 · Aanname-Regel</span>
+      <span class="oefen-duur">15'</span>
+      <span class="oefen-chevron">▼</span>
+    </button>
+    <div class="oefen-body">
+
+      <div class="diagram-wrap">
+        <div class="diagram-label">4v4 · 30x20m · Pionnengoals</div>
+        <svg viewBox="0 0 300 185" xmlns="http://www.w3.org/2000/svg">
+          <rect width="300" height="185" fill="#1a2e1c" rx="4"/>
+          <rect x="15" y="10" width="270" height="165" fill="none" stroke="#2a4a2c" stroke-width="1.5" rx="2"/>
+          <line x1="150" y1="10" x2="150" y2="175" stroke="#2a4a2c" stroke-width="1" stroke-dasharray="4,3"/>
+          <circle cx="150" cy="92" r="20" fill="none" stroke="#2a4a2c" stroke-width="1" stroke-dasharray="3,3"/>
+          <rect x="15" y="77" width="4" height="30" fill="#f07830"/>
+          <rect x="281" y="77" width="4" height="30" fill="#f07830"/>
+          <circle cx="60" cy="50" r="9" fill="#5dde6a" stroke="#fff" stroke-width="1.5"/><text x="60" y="54" text-anchor="middle" font-size="7" fill="#0e1a0f" font-weight="bold">A</text>
+          <circle cx="105" cy="85" r="9" fill="#5dde6a" stroke="#fff" stroke-width="1.5"/><text x="105" y="89" text-anchor="middle" font-size="7" fill="#0e1a0f" font-weight="bold">B</text>
+          <circle cx="70" cy="135" r="9" fill="#5dde6a" stroke="#fff" stroke-width="1.5"/><text x="70" y="139" text-anchor="middle" font-size="7" fill="#0e1a0f" font-weight="bold">C</text>
+          <circle cx="38" cy="92" r="9" fill="#5dde6a" stroke="#fff" stroke-width="1.5"/><text x="38" y="96" text-anchor="middle" font-size="7" fill="#0e1a0f" font-weight="bold">D</text>
+          <circle cx="240" cy="50" r="9" fill="#e84040" stroke="#fff" stroke-width="1.5"/><text x="240" y="54" text-anchor="middle" font-size="7" fill="#fff" font-weight="bold">A</text>
+          <circle cx="195" cy="85" r="9" fill="#e84040" stroke="#fff" stroke-width="1.5"/><text x="195" y="89" text-anchor="middle" font-size="7" fill="#fff" font-weight="bold">B</text>
+          <circle cx="225" cy="135" r="9" fill="#e84040" stroke="#fff" stroke-width="1.5"/><text x="225" y="139" text-anchor="middle" font-size="7" fill="#fff" font-weight="bold">C</text>
+          <circle cx="262" cy="105" r="9" fill="#e84040" stroke="#fff" stroke-width="1.5"/><text x="262" y="109" text-anchor="middle" font-size="7" fill="#fff" font-weight="bold">D</text>
+          <circle cx="150" cy="92" r="5" fill="#f0c830"/>
+          <rect x="68" y="167" width="164" height="14" fill="rgba(93,222,106,0.1)" rx="2"/>
+          <text x="150" y="178" text-anchor="middle" font-size="7" fill="#5dde6a" font-weight="600">★ Aanname vóór schot = dubbele goal</text>
+        </svg>
+        <div class="legenda">
+          <div class="leg-item"><div class="leg-dot" style="background:#5dde6a"></div>Team groen</div>
+          <div class="leg-item"><div class="leg-dot" style="background:#e84040"></div>Team rood</div>
+          <div class="leg-item"><div class="leg-dot" style="background:#f07830"></div>Pionnengoal</div>
+        </div>
+      </div>
+
+      <div class="sectie-label">Opbouw</div>
+      <div class="uitvoering">
+        <p>4v4 op 30x20m met twee pionnengoals. Spelregel: een goal telt dubbel als de speler de bal eerst aannam vóór hij schoot. Coach staat langs de lijn en benoemt goede aannamen hardop — niet corrigeren, maar belonen.</p>
+      </div>
+
+      <div class="sectie-label">Coachingspunten</div>
+      <ul class="coaching-lijst">
+        <li>Benoem elke goede aanname: "mooi, rustig aangenomen!"</li>
+        <li>Spelers die altijd schieten of dribbelen: laat het lopen, grijp niet in bij elke slechte keuze</li>
+        <li>Positief reageren als iemand de bal verovert — benoem het</li>
+      </ul>
+
+      <div class="sectie-label">Differentiatie</div>
+      <div class="diff-blok">
+        <div class="diff-header">Aanpassen via rol</div>
+        <div class="diff-rij">
+          <div class="diff-tag omhoog">⬆ Schiet altijd</div>
+          <p>Verplicht: 2 passes vóór schieten. Als hij het doet — direct benoemen.</p>
+        </div>
+        <div class="diff-rij">
+          <div class="diff-tag omlaag">⬇ Moeite tech.</div>
+          <p>Achterin — zijn positie. Stel hem vragen: "waar staat er iemand vrij?"</p>
+        </div>
+        <div class="diff-rij">
+          <div class="diff-tag omlaag">⬇ Afdwaalt</div>
+          <p>Aanvoerdersband — hij organiseert zijn team.</p>
+        </div>
+      </div>
+
+      <div class="sectie-label" style="margin-top:0.9rem"></div>
+      <div class="tip-box">
+        <span class="tip-icon">💡</span>
+        <p><strong>Tip:</strong> De dubbele-goal-regel maakt coaching onzichtbaar. Spelers spelen automatisch bewuster — jij hoeft er weinig van te zeggen.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- AFSLUITING -->
+  <div class="oefening">
+    <button class="oefen-toggle" onclick="toggleOefening(this)">
+      <span class="oefen-fase fase-afsluiting">Afsluiting</span>
+      <span class="oefen-naam">Kring &amp; Terugblik</span>
+      <span class="oefen-duur">5'</span>
+      <span class="oefen-chevron">▼</span>
+    </button>
+    <div class="oefen-body">
+      <div class="sectie-label">Opbouw</div>
+      <div class="uitvoering">
+        <p>Spelers in een kring. Vraag: <em>"Wie heeft vandaag een bal écht rustig aangenomen?"</em> Laat 2-3 spelers antwoorden. Sluit af met één positief woord per speler. Eindig met het teamritueel.</p>
+      </div>
+      <div class="sectie-label">Coachingspunten</div>
+      <ul class="coaching-lijst">
+        <li>Noem elke speler bij naam met iets positiefs — ook als het klein is</li>
+        <li>Benoem expliciet als iemand goed is omgegaan met een fout</li>
+        <li>Eindig altijd met energie — nooit met een negatief punt</li>
+      </ul>
+    </div>
+  </div>
+
+</div><!-- einde T1 -->
+
+<!-- ══════════════════════════════
+     TRAINING 2 — VRIJDAG
+══════════════════════════════ -->
+<div id="t2" class="training-panel">
+
+  <div class="training-head">
+    <h2>Verbinding &amp; Wedstrijd</h2>
+    <p>Vrijdag · Combinaties en toepassen van de rode draad</p>
+  </div>
+
+  <div class="tijdlijn">
+    <div class="tl-item"><div class="tl-min">5'</div><div class="tl-naam">Instuif</div></div>
+    <div class="tl-item"><div class="tl-min">15'</div><div class="tl-naam">Techniek</div></div>
+    <div class="tl-item"><div class="tl-min">10'</div><div class="tl-naam">1v1</div></div>
+    <div class="tl-item"><div class="tl-min">10'</div><div class="tl-naam">Afronden</div></div>
+    <div class="tl-item"><div class="tl-min">15'</div><div class="tl-naam">Partijspel</div></div>
+    <div class="tl-item"><div class="tl-min">5'</div><div class="tl-naam">Afsluiting</div></div>
+  </div>
+
+  <!-- INSTUIF T2 -->
+  <div class="oefening">
+    <button class="oefen-toggle" onclick="toggleOefening(this)">
+      <span class="oefen-fase fase-instuif">Instuif</span>
+      <span class="oefen-naam">Vrij Spelen</span>
+      <span class="oefen-duur">5'</span>
+      <span class="oefen-chevron">▼</span>
+    </button>
+    <div class="oefen-body">
+      <div class="sectie-label">Opbouw</div>
+      <div class="uitvoering">
+        <p>Identiek aan woensdag. Coach observeert opnieuw: is er al verschil in hoe spelers de bal aannemen? Zijn dezelfde spelers actief of passief?</p>
+      </div>
+      <div class="sectie-label">Coachingspunten</div>
+      <ul class="coaching-lijst">
+        <li>Vergelijk met woensdag — verbeteringen benoemen na de instuif</li>
+        <li>Laat het lopen, grijp niet in</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- DRIEHOEKSPASSEN -->
+  <div class="oefening">
+    <button class="oefen-toggle" onclick="toggleOefening(this)">
+      <span class="oefen-fase fase-techniek">Techniek</span>
+      <span class="oefen-naam">Driehoekspassen</span>
+      <span class="oefen-duur">15'</span>
+      <span class="oefen-chevron">▼</span>
+    </button>
+    <div class="oefen-body">
+
+      <div class="diagram-wrap">
+        <div class="diagram-label">Driehoekspassen · 2 groepen</div>
+        <svg viewBox="0 0 300 185" xmlns="http://www.w3.org/2000/svg">
+          <rect width="300" height="185" fill="#1a2e1c" rx="4"/>
+          <!-- Groep 1 -->
+          <polygon points="60,25 20,110 100,110" fill="none" stroke="#2a4a2c" stroke-width="1" stroke-dasharray="3,3"/>
+          <polygon points="60,25 54,15 66,15" fill="#f07830"/>
+          <polygon points="20,110 14,100 26,100" fill="#f07830"/>
+          <polygon points="100,110 94,100 106,100" fill="#f07830"/>
+          <circle cx="60" cy="25" r="9" fill="#5dde6a" stroke="#fff" stroke-width="1.5"/><text x="60" y="29" text-anchor="middle" font-size="7" fill="#0e1a0f" font-weight="bold">A</text>
+          <circle cx="20" cy="110" r="9" fill="#5dde6a" stroke="#fff" stroke-width="1.5"/><text x="20" y="114" text-anchor="middle" font-size="7" fill="#0e1a0f" font-weight="bold">C</text>
+          <circle cx="100" cy="110" r="9" fill="#5dde6a" stroke="#fff" stroke-width="1.5"/><text x="100" y="114" text-anchor="middle" font-size="7" fill="#0e1a0f" font-weight="bold">B</text>
+          <circle cx="60" cy="82" r="9" fill="#f07830" stroke="#fff" stroke-width="1.5"/><text x="60" y="86" text-anchor="middle" font-size="7" fill="#fff" font-weight="bold">M</text>
+          <circle cx="43" cy="55" r="4" fill="#f0c830"/>
+          <line x1="60" y1="34" x2="61" y2="73" stroke="#f0c830" stroke-width="1.5" stroke-dasharray="3,2"/>
+          <polygon points="61,73 57,64 65,62" fill="#f0c830"/>
+          <path d="M 51 25 Q 20 45 20 101" fill="none" stroke="#5dde6a" stroke-width="1.2" stroke-dasharray="2,2"/>
+          <polygon points="20,101 16,92 24,91" fill="#5dde6a"/>
+          <text x="60" y="140" text-anchor="middle" font-size="8" fill="#7a9a7c">Groep 1 · 8m zijde</text>
+
+          <!-- Groep 2 -->
+          <polygon points="240,25 200,110 280,110" fill="none" stroke="#2a4a2c" stroke-width="1" stroke-dasharray="3,3"/>
+          <polygon points="240,25 234,15 246,15" fill="#f07830"/>
+          <polygon points="200,110 194,100 206,100" fill="#f07830"/>
+          <polygon points="280,110 274,100 286,100" fill="#f07830"/>
+          <circle cx="240" cy="25" r="9" fill="#5dde6a" stroke="#fff" stroke-width="1.5"/><text x="240" y="29" text-anchor="middle" font-size="7" fill="#0e1a0f" font-weight="bold">A</text>
+          <circle cx="200" cy="110" r="9" fill="#5dde6a" stroke="#fff" stroke-width="1.5"/><text x="200" y="114" text-anchor="middle" font-size="7" fill="#0e1a0f" font-weight="bold">C</text>
+          <circle cx="280" cy="110" r="9" fill="#5dde6a" stroke="#fff" stroke-width="1.5"/><text x="280" y="114" text-anchor="middle" font-size="7" fill="#0e1a0f" font-weight="bold">B</text>
+          <circle cx="240" cy="82" r="9" fill="#f07830" stroke="#fff" stroke-width="1.5"/><text x="240" y="86" text-anchor="middle" font-size="7" fill="#fff" font-weight="bold">M</text>
+          <circle cx="223" cy="55" r="4" fill="#f0c830"/>
+          <line x1="240" y1="34" x2="241" y2="73" stroke="#f0c830" stroke-width="1.5" stroke-dasharray="3,2"/>
+          <polygon points="241,73 237,64 245,62" fill="#f0c830"/>
+          <path d="M 231 25 Q 200 45 200 101" fill="none" stroke="#5dde6a" stroke-width="1.2" stroke-dasharray="2,2"/>
+          <polygon points="200,101 196,92 204,91" fill="#5dde6a"/>
+          <text x="240" y="140" text-anchor="middle" font-size="8" fill="#7a9a7c">Groep 2 · 8m zijde</text>
+
+          <text x="150" y="165" text-anchor="middle" font-size="7" fill="#f07830">● Middenspeler (M) wisselt elke 45 sec</text>
+        </svg>
+        <div class="legenda">
+          <div class="leg-item"><div class="leg-dot" style="background:#5dde6a"></div>Buitenspeler</div>
+          <div class="leg-item"><div class="leg-dot" style="background:#f07830"></div>Middenspeler</div>
+          <div class="leg-item"><div class="leg-line" style="background:#5dde6a"></div>Looproute</div>
+          <div class="leg-item"><div class="leg-line" style="background:#f0c830;opacity:.7"></div>Pas</div>
+        </div>
+      </div>
+
+      <div class="sectie-label">Opbouw</div>
+      <div class="uitvoering">
+        <p>Driehoek van pionnen (8m zijde). Drie spelers op de punten, één in het midden. A speelt op de middenspeler en loopt door naar punt B. Middenspeler neemt aan, draait en speelt op C. Middenspeler wisselt elke 45 sec. Twee groepen van 4 tegelijk, 2 ballen actief.</p>
+      </div>
+
+      <div class="sectie-label">Coachingspunten</div>
+      <ul class="coaching-lijst">
+        <li>Middenspeler: open staan — nooit met rug naar de bal</li>
+        <li>Aanname: buiten het lichaam, richting de volgende pass</li>
+        <li>Buitenspelers: driehoek breed houden — niet samenklonteren</li>
+        <li>Tempo verhogen als het goed gaat</li>
+      </ul>
+
+      <div class="sectie-label">Differentiatie</div>
+      <div class="diff-blok">
+        <div class="diff-header">Aanpassen per speler</div>
+        <div class="diff-rij">
+          <div class="diff-tag omlaag">⬇ Moeite</div>
+          <p>Start op de punt — niet als middenspeler. Rustige buitenrol, aanname zonder tijdsdruk.</p>
+        </div>
+        <div class="diff-rij">
+          <div class="diff-tag omlaag">⬇ Afdwaalt</div>
+          <p>Middenspeler — constant bewegen en beslissen. Concentratie blijft vanzelf omhoog.</p>
+        </div>
+        <div class="diff-rij">
+          <div class="diff-tag omhoog">⬆ Overzicht</div>
+          <p>Coachende rol: mag na afloop aan de groep vertellen wat beter kon.</p>
+        </div>
+        <div class="diff-rij">
+          <div class="diff-tag omlaag">⬇ Haastig</div>
+          <p>"Stop de bal eerst, dan kijk je, dan pas speel je door." Letterlijk zo benoemen.</p>
+        </div>
+      </div>
+
+      <div class="sectie-label">Progressie</div>
+      <div class="progressie-grid">
+        <div class="prog-item harder">
+          <div class="prog-label">⬆ Te makkelijk</div>
+          <p>Middenspeler: 1 aanraking — direct doorspelen.</p>
+        </div>
+        <div class="prog-item makkelijker">
+          <div class="prog-label">⬇ Te moeilijk</div>
+          <p>Grotere driehoek (12m), bal mag even stilliggen.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 1v1 DRIBBEL -->
+  <div class="oefening">
+    <button class="oefen-toggle" onclick="toggleOefening(this)">
+      <span class="oefen-fase fase-duel">1v1 Duel</span>
+      <span class="oefen-naam">Dribbel &amp; Doorbreken</span>
+      <span class="oefen-duur">10'</span>
+      <span class="oefen-chevron">▼</span>
+    </button>
+    <div class="oefen-body">
+
+      <div class="diagram-wrap">
+        <div class="diagram-label">1v1 met verplichte kap · 4 stroken</div>
+        <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+          <rect width="300" height="200" fill="#1a2e1c" rx="4"/>
+          <rect x="10" y="15" width="60" height="170" fill="none" stroke="#2a4a2c" stroke-width="1.5" stroke-dasharray="4,3"/>
+          <line x1="10" y1="100" x2="70" y2="100" stroke="#3a5a3c" stroke-width="1"/>
+          <line x1="10" y1="15" x2="70" y2="15" stroke="#5dde6a" stroke-width="2"/>
+          <line x1="10" y1="185" x2="70" y2="185" stroke="#5dde6a" stroke-width="2"/>
+          <rect x="80" y="15" width="60" height="170" fill="none" stroke="#2a4a2c" stroke-width="1.5" stroke-dasharray="4,3"/>
+          <line x1="80" y1="100" x2="140" y2="100" stroke="#3a5a3c" stroke-width="1"/>
+          <line x1="80" y1="15" x2="140" y2="15" stroke="#5dde6a" stroke-width="2"/>
+          <line x1="80" y1="185" x2="140" y2="185" stroke="#5dde6a" stroke-width="2"/>
+          <rect x="155" y="15" width="60" height="170" fill="none" stroke="#2a4a2c" stroke-width="1.5" stroke-dasharray="4,3"/>
+          <line x1="155" y1="100" x2="215" y2="100" stroke="#3a5a3c" stroke-width="1"/>
+          <line x1="155" y1="15" x2="215" y2="15" stroke="#5dde6a" stroke-width="2"/>
+          <line x1="155" y1="185" x2="215" y2="185" stroke="#5dde6a" stroke-width="2"/>
+          <rect x="225" y="15" width="60" height="170" fill="none" stroke="#2a4a2c" stroke-width="1.5" stroke-dasharray="4,3"/>
+          <line x1="225" y1="100" x2="285" y2="100" stroke="#3a5a3c" stroke-width="1"/>
+          <line x1="225" y1="15" x2="285" y2="15" stroke="#5dde6a" stroke-width="2"/>
+          <line x1="225" y1="185" x2="285" y2="185" stroke="#5dde6a" stroke-width="2"/>
+          <circle cx="40" cy="65" r="9" fill="#5dde6a" stroke="#fff" stroke-width="1.5"/><text x="40" y="69" text-anchor="middle" font-size="8" fill="#0e1a0f" font-weight="bold">A</text>
+          <circle cx="40" cy="135" r="9" fill="#e84040" stroke="#fff" stroke-width="1.5"/><text x="40" y="139" text-anchor="middle" font-size="8" fill="#fff" font-weight="bold">V</text>
+          <circle cx="40" cy="100" r="5" fill="#f0c830"/>
+          <path d="M 40 84 Q 28 92 40 100" fill="none" stroke="#5dde6a" stroke-width="1.5"/>
+          <text x="18" y="93" font-size="6" fill="#5dde6a">kap</text>
+          <circle cx="110" cy="65" r="9" fill="#5dde6a" stroke="#fff" stroke-width="1.5"/><text x="110" y="69" text-anchor="middle" font-size="8" fill="#0e1a0f" font-weight="bold">A</text>
+          <circle cx="110" cy="135" r="9" fill="#e84040" stroke="#fff" stroke-width="1.5"/><text x="110" y="139" text-anchor="middle" font-size="8" fill="#fff" font-weight="bold">V</text>
+          <circle cx="110" cy="100" r="5" fill="#f0c830"/>
+          <circle cx="185" cy="65" r="9" fill="#5dde6a" stroke="#fff" stroke-width="1.5"/><text x="185" y="69" text-anchor="middle" font-size="8" fill="#0e1a0f" font-weight="bold">A</text>
+          <circle cx="185" cy="135" r="9" fill="#e84040" stroke="#fff" stroke-width="1.5"/><text x="185" y="139" text-anchor="middle" font-size="8" fill="#fff" font-weight="bold">V</text>
+          <circle cx="185" cy="100" r="5" fill="#f0c830"/>
+          <circle cx="255" cy="65" r="9" fill="#5dde6a" stroke="#fff" stroke-width="1.5"/><text x="255" y="69" text-anchor="middle" font-size="8" fill="#0e1a0f" font-weight="bold">A</text>
+          <circle cx="255" cy="135" r="9" fill="#e84040" stroke="#fff" stroke-width="1.5"/><text x="255" y="139" text-anchor="middle" font-size="8" fill="#fff" font-weight="bold">V</text>
+          <circle cx="255" cy="100" r="5" fill="#f0c830"/>
+          <text x="150" y="198" text-anchor="middle" font-size="7" fill="#5dde6a">Verplicht: 1 kapactie vóór eindlijn</text>
+        </svg>
+        <div class="legenda">
+          <div class="leg-item"><div class="leg-dot" style="background:#5dde6a"></div>Aanvaller</div>
+          <div class="leg-item"><div class="leg-dot" style="background:#e84040"></div>Verdediger</div>
+          <div class="leg-item"><div class="leg-dot" style="background:#f0c830"></div>Bal</div>
+        </div>
+      </div>
+
+      <div class="sectie-label">Opbouw</div>
+      <div class="uitvoering">
+        <p>Zelfde strokenopzet (10x5m, 4 paren tegelijk). Nu met verplichte kapbeweging vóór de eindlijn. Mag alles zijn: buitenkant, binnenkant, schijnbeweging. Na 5 minuten wisselen aanvaller en verdediger.</p>
+      </div>
+
+      <div class="sectie-label">Coachingspunten</div>
+      <ul class="coaching-lijst">
+        <li>Aanvaller: kap uitvoeren op het juiste moment — niet te vroeg</li>
+        <li>Verdediger: geduld — wacht tot de kap komt, dan reageer</li>
+        <li>Iedereen mag zijn eigen kap kiezen — geen verplichte techniek</li>
+        <li>Benoem elke geslaagde kap, ook als het duel daarna verloren gaat</li>
+      </ul>
+
+      <div class="sectie-label">Differentiatie</div>
+      <div class="diff-blok">
+        <div class="diff-header">Aanpassen per speler</div>
+        <div class="diff-rij">
+          <div class="diff-tag omhoog">⬆ Dribbelaar</div>
+          <p>Zijn terrein — geef ruimte. Benoem zijn kwaliteit publiekelijk naar het team.</p>
+        </div>
+        <div class="diff-rij">
+          <div class="diff-tag omlaag">⬇ Moeite tech.</div>
+          <p>Verdediger-rol — hoeft geen kap. Focus op goed verdedigen: stuurt hij naar de zijlijn?</p>
+        </div>
+        <div class="diff-rij">
+          <div class="diff-tag omhoog">⬆ Snel</div>
+          <p>Snelheid inzetten ná de kap — combinatie van techniek en explosiviteit.</p>
+        </div>
+      </div>
+
+      <div class="sectie-label">Progressie</div>
+      <div class="progressie-grid">
+        <div class="prog-item harder">
+          <div class="prog-label">⬆ Te makkelijk</div>
+          <p>Twee verplichte kapacties of smallere strook.</p>
+        </div>
+        <div class="prog-item makkelijker">
+          <div class="prog-label">⬇ Te moeilijk</div>
+          <p>Kap niet verplicht. Bredere strook (8m).</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMBINATIE & SCHOT -->
+  <div class="oefening">
+    <button class="oefen-toggle" onclick="toggleOefening(this)">
+      <span class="oefen-fase fase-afronden">Afronden</span>
+      <span class="oefen-naam">Combinatie &amp; Schot</span>
+      <span class="oefen-duur">10'</span>
+      <span class="oefen-chevron">▼</span>
+    </button>
+    <div class="oefen-body">
+
+      <div class="diagram-wrap">
+        <div class="diagram-label">Combinatie &amp; Schot</div>
+        <svg viewBox="0 0 280 210" xmlns="http://www.w3.org/2000/svg">
+          <rect width="280" height="210" fill="#1a2e1c" rx="4"/>
+          <rect x="95" y="10" width="90" height="18" fill="none" stroke="#7a9a7c" stroke-width="2"/>
+          <text x="140" y="23" text-anchor="middle" font-size="7" fill="#7a9a7c">DOEL</text>
+          <circle cx="140" cy="22" r="8" fill="#f07830" stroke="#fff" stroke-width="1.5"/>
+          <text x="140" y="26" text-anchor="middle" font-size="6" fill="#fff" font-weight="bold">K</text>
+          <!-- Kaatser B -->
+          <circle cx="110" cy="105" r="9" fill="#5dde6a" stroke="#fff" stroke-width="1.5"/>
+          <text x="110" y="109" text-anchor="middle" font-size="7" fill="#0e1a0f" font-weight="bold">B</text>
+          <text x="110" y="121" text-anchor="middle" font-size="6" fill="#5dde6a">kaatser</text>
+          <!-- A start -->
+          <circle cx="175" cy="135" r="9" fill="#e84040" stroke="#fff" stroke-width="1.5"/>
+          <text x="175" y="139" text-anchor="middle" font-size="7" fill="#fff" font-weight="bold">A</text>
+          <!-- A schiet positie -->
+          <circle cx="135" cy="72" r="9" fill="#e84040" stroke="#fff" stroke-width="1.5" stroke-dasharray="3,2" opacity="0.7"/>
+          <text x="135" y="76" text-anchor="middle" font-size="7" fill="#fff" font-weight="bold">A</text>
+          <!-- Pass A→B -->
+          <line x1="166" y1="132" x2="119" y2="108" stroke="#f0c830" stroke-width="1.5" stroke-dasharray="3,2"/>
+          <polygon points="119,108 126,116 130,108" fill="#f0c830"/>
+          <!-- Loop A -->
+          <path d="M 167 128 Q 150 98 144 81" fill="none" stroke="#e84040" stroke-width="1.2" stroke-dasharray="2,2"/>
+          <polygon points="144,81 139,90 148,89" fill="#e84040"/>
+          <!-- Kaats B→A -->
+          <line x1="117" y1="97" x2="132" y2="81" stroke="#f0c830" stroke-width="1.5"/>
+          <polygon points="132,81 125,84 128,92" fill="#f0c830"/>
+          <!-- Schot -->
+          <line x1="135" y1="63" x2="140" y2="32" stroke="#e84040" stroke-width="2"/>
+          <polygon points="140,32 134,42 142,41" fill="#e84040"/>
+          <!-- Stappen -->
+          <text x="210" y="75" font-size="7" fill="#7a9a7c">① A → B</text>
+          <text x="210" y="88" font-size="7" fill="#7a9a7c">② A loopt door</text>
+          <text x="210" y="101" font-size="7" fill="#7a9a7c">③ B kaatst</text>
+          <text x="210" y="114" font-size="7" fill="#7a9a7c">④ A schiet</text>
+        </svg>
+        <div class="legenda">
+          <div class="leg-item"><div class="leg-dot" style="background:#e84040"></div>Schutter (A)</div>
+          <div class="leg-item"><div class="leg-dot" style="background:#5dde6a"></div>Kaatser (B)</div>
+          <div class="leg-item"><div class="leg-line" style="background:#e84040"></div>Loop/Schot</div>
+          <div class="leg-item"><div class="leg-line" style="background:#f0c830;opacity:.7"></div>Pas</div>
+        </div>
+      </div>
+
+      <div class="sectie-label">Opbouw</div>
+      <div class="uitvoering">
+        <p>Twee spelers starten naast elkaar op 20m van doel. A speelt op B, loopt door naar andere positie. B neemt aan, kaatst terug op A (die inmiddels verplaatst is). A schiet. Doorlopend ritme — 4 paren tegelijk. Keeper wisselt elke 2 minuten.</p>
+      </div>
+
+      <div class="sectie-label">Coachingspunten</div>
+      <ul class="coaching-lijst">
+        <li>A: loop ná de pass — niet blijven staan</li>
+        <li>B: aanname gericht op terugspelen, voet open richting A</li>
+        <li>Schutter: bal aannemen in beweging en direct schieten</li>
+      </ul>
+
+      <div class="sectie-label">Differentiatie</div>
+      <div class="diff-blok">
+        <div class="diff-header">Aanpassen per speler</div>
+        <div class="diff-rij">
+          <div class="diff-tag omhoog">⬆ Schiet altijd</div>
+          <p>Kaatsrol — hij leert de bal af te spelen. Schutter-rol pas ná de kaats vervuld.</p>
+        </div>
+        <div class="diff-rij">
+          <div class="diff-tag omlaag">⬇ Moeite tech.</div>
+          <p>Kaatsrol — eenvoudigere taak. Schutter-rol pas als vertrouwen er is.</p>
+        </div>
+        <div class="diff-rij">
+          <div class="diff-tag omhoog">⬆ Snel</div>
+          <p>Schutter — direct naar schietpositie na de kaats. Snelheid en afronden combineren.</p>
+        </div>
+      </div>
+
+      <div class="sectie-label">Progressie</div>
+      <div class="progressie-grid">
+        <div class="prog-item harder">
+          <div class="prog-label">⬆ Te makkelijk</div>
+          <p>Derde speler toevoegen — langere combinatie vóór het schot.</p>
+        </div>
+        <div class="prog-item makkelijker">
+          <div class="prog-label">⬇ Te moeilijk</div>
+          <p>Bal ligt stil — combinatie weghalen, terug naar basisschot.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PARTIJSPEL T2 -->
+  <div class="oefening">
+    <button class="oefen-toggle" onclick="toggleOefening(this)">
+      <span class="oefen-fase fase-partijspel">Partijspel</span>
+      <span class="oefen-naam">4v4 · Vrij Spel</span>
+      <span class="oefen-duur">15'</span>
+      <span class="oefen-chevron">▼</span>
+    </button>
+    <div class="oefen-body">
+      <div class="sectie-label">Opbouw</div>
+      <div class="uitvoering">
+        <p>4v4 op 30x20m, twee pionnengoals. Geen extra spelregel — vrij spel. Na 7 minuten korte time-out: coach benoemt één positief ding. Dan nog 8 minuten. De coach kijkt of de aanname-bewustheid uit de training zichtbaar is in het echte spel.</p>
+      </div>
+      <div class="sectie-label">Coachingspunten</div>
+      <ul class="coaching-lijst">
+        <li>Zie je een speler rustig aannemen? Benoem het hardop</li>
+        <li>Wie dreigt weg te driften? Kort oogcontact en een knik is genoeg</li>
+        <li>Past iemand een keer af die dat zelden doet? Noem het direct</li>
+        <li>Hoe reageert iemand op een fout? Observeer — grijp pas in als het escaleert</li>
+      </ul>
+      <div class="sectie-label" style="margin-top:0.9rem"></div>
+      <div class="tip-box">
+        <span class="tip-icon">📋</span>
+        <p><strong>Na de training:</strong> Noteer per speler wat opviel — goed én minder. Dit is je input voor eventuele aanpassingen volgende week.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- AFSLUITING T2 -->
+  <div class="oefening">
+    <button class="oefen-toggle" onclick="toggleOefening(this)">
+      <span class="oefen-fase fase-afsluiting">Afsluiting</span>
+      <span class="oefen-naam">Kring &amp; Weekafsluiting</span>
+      <span class="oefen-duur">5'</span>
+      <span class="oefen-chevron">▼</span>
+    </button>
+    <div class="oefen-body">
+      <div class="sectie-label">Opbouw</div>
+      <div class="uitvoering">
+        <p>Kring. Vraag: <em>"Wat heb je deze week geleerd over aannemen?"</em> Laat 2-3 spelers antwoorden. Sluit af met één positief woord per speler. Eindig met het teamritueel.</p>
+      </div>
+      <div class="sectie-label">Coachingspunten</div>
+      <ul class="coaching-lijst">
+        <li>Houd het kort — max 5 minuten</li>
+        <li>Geen negatieve punten in de afsluiting</li>
+        <li>Elke speler gaat naar huis met een goed gevoel</li>
+      </ul>
+    </div>
+  </div>
+
+</div><!-- einde T2 -->
+
+</main>
+
+<footer>
+  VV Maarssen · J10-4 · Week 1 · Fase 1: Fundament · 2025–2026
+</footer>
+
+<script>
+  function switchTab(id, btn) {
+    document.querySelectorAll('.training-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    btn.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function toggleOefening(btn) {
+    const body = btn.nextElementSibling;
+    const isOpen = body.classList.contains('open');
+    btn.classList.toggle('open', !isOpen);
+    body.classList.toggle('open', !isOpen);
+  }
+
+  // Open eerste oefening van elke training standaard
+  document.querySelectorAll('.training-panel').forEach(panel => {
+    const first = panel.querySelector('.oefen-toggle');
+    if (first) {
+      first.classList.add('open');
+      first.nextElementSibling.classList.add('open');
+    }
+  });
+</script>
+
+</body>
+</html>
