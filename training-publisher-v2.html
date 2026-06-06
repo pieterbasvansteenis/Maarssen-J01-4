@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>J10-4 Training Publisher</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --oranje: #FF6B1A;
+    --donker: #0F1117;
+    --donker2: #181C27;
+    --donker3: #222840;
+    --wit: #F5F5F0;
+    --grijs: #8A8FA8;
+    --groen: #2ECC71;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--donker);
+    color: var(--wit);
+    font-family: 'Barlow', sans-serif;
+    max-width: 480px;
+    margin: 0 auto;
+    min-height: 100vh;
+    padding-bottom: 40px;
+  }
+  .header {
+    background: linear-gradient(135deg, var(--donker2), var(--donker3));
+    padding: 24px 20px 20px;
+    border-bottom: 3px solid var(--oranje);
+  }
+  .club-tag {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    color: var(--oranje);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .header h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 26px;
+    font-weight: 900;
+    text-transform: uppercase;
+    line-height: 1.1;
+  }
+  .header h1 span { color: var(--oranje); }
+
+  .sectie {
+    margin: 16px;
+    background: var(--donker2);
+    border-radius: 14px;
+    padding: 16px;
+    border: 1px solid var(--donker3);
+  }
+  .sectie-titel {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    color: var(--oranje);
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  label {
+    font-size: 13px;
+    color: var(--grijs);
+    font-weight: 600;
+    display: block;
+    margin-bottom: 6px;
+    margin-top: 12px;
+  }
+  label:first-of-type { margin-top: 0; }
+
+  input[type="password"],
+  input[type="text"],
+  textarea,
+  select {
+    width: 100%;
+    background: var(--donker3);
+    border: 1px solid #2a3050;
+    border-radius: 8px;
+    padding: 10px 12px;
+    color: var(--wit);
+    font-family: 'Barlow', sans-serif;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  input:focus, textarea:focus, select:focus {
+    border-color: var(--oranje);
+  }
+  select option { background: var(--donker2); }
+  textarea { min-height: 80px; resize: vertical; }
+
+  .token-rij {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+  .token-rij input { flex: 1; }
+  .token-opslaan {
+    background: var(--donker3);
+    border: 1px solid var(--oranje);
+    color: var(--oranje);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .token-status {
+    font-size: 12px;
+    margin-top: 6px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    display: none;
+  }
+  .token-status.ok { background: rgba(46,204,113,0.1); color: var(--groen); border: 1px solid rgba(46,204,113,0.3); display: block; }
+  .token-status.fout { background: rgba(255,107,26,0.1); color: var(--oranje); border: 1px solid rgba(255,107,26,0.3); display: block; }
+
+  .publiceer-btn {
+    width: 100%;
+    background: var(--oranje);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 16px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 20px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    margin: 16px;
+    width: calc(100% - 32px);
+    transition: background 0.2s, transform 0.1s;
+  }
+  .publiceer-btn:active { transform: scale(0.98); background: #e55a0f; }
+  .publiceer-btn:disabled { background: #555; cursor: not-allowed; }
+
+  .resultaat {
+    margin: 0 16px;
+    border-radius: 14px;
+    padding: 16px;
+    display: none;
+  }
+  .resultaat.succes {
+    background: rgba(46,204,113,0.08);
+    border: 1px solid rgba(46,204,113,0.3);
+    display: block;
+  }
+  .resultaat.fout {
+    background: rgba(255,107,26,0.08);
+    border: 1px solid rgba(255,107,26,0.3);
+    display: block;
+  }
+  .resultaat h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+  }
+  .resultaat.succes h3 { color: var(--groen); }
+  .resultaat.fout h3 { color: var(--oranje); }
+  .resultaat p { font-size: 13px; color: #9ca3b8; line-height: 1.6; margin-bottom: 8px; }
+
+  .deel-link {
+    background: var(--donker3);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 13px;
+    color: var(--oranje);
+    word-break: break-all;
+    margin: 8px 0;
+    border: 1px solid rgba(255,107,26,0.3);
+  }
+  .kopieer-btn {
+    width: 100%;
+    background: var(--donker3);
+    border: 1px solid var(--oranje);
+    color: var(--oranje);
+    border-radius: 8px;
+    padding: 10px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+    margin-top: 8px;
+    letter-spacing: 1px;
+  }
+
+  .loader {
+    display: none;
+    text-align: center;
+    padding: 12px;
+    color: var(--grijs);
+    font-size: 13px;
+  }
+  .loader.actief { display: block; }
+  .spinner {
+    display: inline-block;
+    width: 20px; height: 20px;
+    border: 2px solid var(--donker3);
+    border-top-color: var(--oranje);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .info-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,107,26,0.08);
+    border: 1px solid rgba(255,107,26,0.2);
+    border-radius: 20px;
+    padding: 4px 10px;
+    font-size: 11px;
+    color: var(--grijs);
+    margin-top: 8px;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="club-tag">VV Maarssen · J10-4</div>
+  <h1>Training<br><span>Publisher</span></h1>
+</div>
+
+<!-- STAP 1: TOKEN -->
+<div class="sectie">
+  <div class="sectie-titel">🔑 Stap 1 · GitHub Token</div>
+  <label>Jouw GitHub token (wordt niet opgeslagen)</label>
+  <div class="token-rij">
+    <input type="password" id="tokenInput" placeholder="ghp_..." autocomplete="off" autocorrect="off" spellcheck="false"/>
+    <button class="token-opslaan" onclick="slaTokenOp()">✓ OK</button>
+  </div>
+  <div class="token-status" id="tokenStatus"></div>
+  <div class="info-pill">🔒 Token blijft alleen in jouw browser</div>
+</div>
+
+<!-- STAP 2: TRAINING KIEZEN -->
+<div class="sectie">
+  <div class="sectie-titel">⚽ Stap 2 · Training selecteren</div>
+
+  <label>Bestandsnaam</label>
+  <input type="text" id="bestandsnaam" value="training-j10-4-week-omschakelen.html" placeholder="training-naam.html"/>
+
+  <label>Beschrijving (voor commit)</label>
+  <input type="text" id="commitBericht" value="Training week omschakelen & vrije man" placeholder="Bijv. Training week 2 aannemen"/>
+</div>
+
+<!-- PUBLICEER KNOP -->
+<button class="publiceer-btn" onclick="publiceer()" id="publiceerBtn">
+  🚀 Publiceer & Deel
+</button>
+
+<div class="loader" id="loader">
+  <span class="spinner"></span> Bezig met publiceren...
+</div>
+
+<!-- RESULTAAT -->
+<div class="resultaat" id="resultaat"></div>
+
+<script>
+  // GitHub config
+  const GITHUB_USER = 'pieterbasvansteenis';
+  const GITHUB_REPO = 'Maarssen-J01-4';
+  const GITHUB_BRANCH = 'main';
+
+  let opgeslagenToken = '';
+
+  // Laad token uit localStorage bij opstarten
+  window.addEventListener('DOMContentLoaded', () => {
+    const opgeslagen = localStorage.getItem('gh_token');
+    if (opgeslagen) {
+      opgeslagenToken = opgeslagen;
+      document.getElementById('tokenInput').value = '••••••••••••••••••••';
+      const status = document.getElementById('tokenStatus');
+      status.className = 'token-status ok';
+      status.textContent = '✅ Token onthouden — klaar om te publiceren!';
+    }
+  });
+
+  function slaTokenOp() {
+    const token = document.getElementById('tokenInput').value.trim();
+    const status = document.getElementById('tokenStatus');
+    if (token === '••••••••••••••••••••') {
+      status.className = 'token-status ok';
+      status.textContent = '✅ Token al opgeslagen!';
+      return;
+    }
+    if (!token.startsWith('ghp_') && !token.startsWith('github_pat_')) {
+      status.className = 'token-status fout';
+      status.textContent = '⚠️ Token ziet er niet goed uit. Begint hij met ghp_?';
+      return;
+    }
+    opgeslagenToken = token;
+    localStorage.setItem('gh_token', token);
+    document.getElementById('tokenInput').value = '••••••••••••••••••••';
+    status.className = 'token-status ok';
+    status.textContent = '✅ Token opgeslagen & onthouden!';
+  }
+
+  async function haalBestandsinhoud() {
+    // Haal de inhoud van het gedownloade trainingsbestand op via fetch
+    // We lezen het uit de bekende output locatie
+    try {
+      const resp = await fetch('training-j10-4-week-omschakelen.html');
+      if (resp.ok) return await resp.text();
+    } catch(e) {}
+    return null;
+  }
+
+  async function publiceer() {
+    const resultaatEl = document.getElementById('resultaat');
+    const loader = document.getElementById('loader');
+    const btn = document.getElementById('publiceerBtn');
+
+    if (!opgeslagenToken) {
+      resultaatEl.className = 'resultaat fout';
+      resultaatEl.innerHTML = '<h3>⚠️ Geen token</h3><p>Vul eerst je GitHub token in bij stap 1.</p>';
+      return;
+    }
+
+    const bestandsnaam = document.getElementById('bestandsnaam').value.trim();
+    const commitBericht = document.getElementById('commitBericht').value.trim();
+
+    if (!bestandsnaam.endsWith('.html')) {
+      resultaatEl.className = 'resultaat fout';
+      resultaatEl.innerHTML = '<h3>⚠️ Bestandsnaam</h3><p>Bestandsnaam moet eindigen op .html</p>';
+      return;
+    }
+
+    btn.disabled = true;
+    loader.classList.add('actief');
+    resultaatEl.className = 'resultaat';
+    resultaatEl.innerHTML = '';
+
+    try {
+      // Controleer of bestand al bestaat (voor SHA)
+      let sha = null;
+      const checkResp = await fetch(
+        `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/${bestandsnaam}`,
+        { headers: { Authorization: `token ${opgeslagenToken}`, Accept: 'application/vnd.github.v3+json' }}
+      );
+      if (checkResp.ok) {
+        const checkData = await checkResp.json();
+        sha = checkData.sha;
+      }
+
+      // Haal trainingsinhoud op — eerst proberen via fetch, anders fallback tekst
+      let inhoud = await haalBestandsinhoud();
+
+      if (!inhoud) {
+        // Fallback: vraag gebruiker om het bestand te plakken
+        resultaatEl.className = 'resultaat fout';
+        resultaatEl.innerHTML = `
+          <h3>📋 Bestand niet gevonden</h3>
+          <p>Plak hieronder de volledige HTML-inhoud van de training:</p>
+          <textarea id="htmlInhoud" style="width:100%;min-height:120px;margin-top:8px;background:#222840;border:1px solid #3a4060;border-radius:8px;padding:10px;color:#F5F5F0;font-size:12px;" placeholder="Plak hier de HTML..."></textarea>
+          <button onclick="publiceerMetInhoud()" style="width:100%;margin-top:10px;background:#FF6B1A;color:white;border:none;border-radius:8px;padding:12px;font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;cursor:pointer;">🚀 Nu publiceren</button>
+        `;
+        loader.classList.remove('actief');
+        btn.disabled = false;
+        return;
+      }
+
+      await stuurNaarGitHub(inhoud, bestandsnaam, commitBericht, sha);
+
+    } catch (err) {
+      resultaatEl.className = 'resultaat fout';
+      resultaatEl.innerHTML = `<h3>❌ Fout</h3><p>${err.message}</p>`;
+    }
+
+    loader.classList.remove('actief');
+    btn.disabled = false;
+  }
+
+  async function publiceerMetInhoud() {
+    const inhoud = document.getElementById('htmlInhoud').value.trim();
+    if (!inhoud) return;
+    const bestandsnaam = document.getElementById('bestandsnaam').value.trim();
+    const commitBericht = document.getElementById('commitBericht').value.trim();
+
+    const loader = document.getElementById('loader');
+    loader.classList.add('actief');
+
+    let sha = null;
+    try {
+      const checkResp = await fetch(
+        `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/${bestandsnaam}`,
+        { headers: { Authorization: `token ${opgeslagenToken}`, Accept: 'application/vnd.github.v3+json' }}
+      );
+      if (checkResp.ok) { const d = await checkResp.json(); sha = d.sha; }
+    } catch(e) {}
+
+    await stuurNaarGitHub(inhoud, bestandsnaam, commitBericht, sha);
+    loader.classList.remove('actief');
+  }
+
+  async function stuurNaarGitHub(inhoud, bestandsnaam, commitBericht, sha) {
+    const resultaatEl = document.getElementById('resultaat');
+
+    const base64 = btoa(unescape(encodeURIComponent(inhoud)));
+    const body = {
+      message: commitBericht || 'Training toegevoegd via Claude',
+      content: base64,
+      branch: GITHUB_BRANCH
+    };
+    if (sha) body.sha = sha;
+
+    const resp = await fetch(
+      `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/${bestandsnaam}`,
+      {
+        method: 'PUT',
+        headers: {
+          Authorization: `token ${opgeslagenToken}`,
+          Accept: 'application/vnd.github.v3+json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+      }
+    );
+
+    if (resp.ok) {
+      const deelLink = `https://${GITHUB_USER}.github.io/${GITHUB_REPO}/${bestandsnaam}`;
+      resultaatEl.className = 'resultaat succes';
+      resultaatEl.innerHTML = `
+        <h3>✅ Gepubliceerd!</h3>
+        <p>De training staat live. Deel deze link via WhatsApp:</p>
+        <div class="deel-link">${deelLink}</div>
+        <button class="kopieer-btn" onclick="kopieerLink('${deelLink}')">📋 Kopieer link</button>
+        <p style="margin-top:10px;font-size:11px;color:#6a7a9a;">Het kan ~1 minuut duren voordat de link live is.</p>
+      `;
+    } else {
+      const err = await resp.json();
+      resultaatEl.className = 'resultaat fout';
+      resultaatEl.innerHTML = `<h3>❌ GitHub fout</h3><p>${err.message}</p>`;
+    }
+  }
+
+  function kopieerLink(link) {
+    navigator.clipboard.writeText(link).then(() => {
+      const btn = document.querySelector('.kopieer-btn');
+      btn.textContent = '✅ Gekopieerd!';
+      setTimeout(() => btn.textContent = '📋 Kopieer link', 2000);
+    });
+  }
+</script>
+</body>
+</html>
